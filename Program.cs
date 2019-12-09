@@ -4,30 +4,25 @@ namespace _11
 {
     class Program
     {
-        static void FillingTheArray(int n)
+        static int[] FillingNewArrayWithNumbersFromKeyboard(int n)
         {
             int[] array = new int[n];
-            int max = int.MinValue;
-            /*  Random rand = new Random();
-            for (int i = 0; i < n; i++)
-            {
-                array[i] = rand.Next(-101,101);
-                if (array[i] >= max)
-                {
-                    max = array[i];
-                }
-            }*/
             for (int q = 0; q <= n - 1; q++)
             {
                 int num = int.Parse(Console.ReadLine());
                 array[q] = num;
-                if (num >= max)
-                {
-                    max = num;
-                }
             }
-            PrintArray(array);
-            MultiplyNumbersInArray(array, max);
+            return array;
+        }
+        static int[] FillingNewArrayWithRandomNumbers(int n)
+        {
+            int[] array = new int[n];
+            Random rand = new Random();
+            foreach (int i in array)
+            {
+                array[i] = rand.Next(-101, 101);
+            }
+            return array;
         }
         static void PrintArray(int[] array)
         {
@@ -37,21 +32,42 @@ namespace _11
                 Console.Write("{0} ", k);
             }
         }
-        static void MultiplyNumbersInArray(int[] array, int max)
+        static double MultiplyNumbersInArray(int[] array, int n)
         {
-            int IndexOfMax = Array.IndexOf(array, max);
+            int max = array[0];
+            foreach (int q in array)
+            {
+                if (q>=max)
+                {
+                    max = q;
+                }
+            }
+            int IndexOfMax = Array.LastIndexOf(array, max);
             int multiplication = 1;
             for (int q = 0; q < IndexOfMax; q++)
             {
                 multiplication *= array[q];
             }
-            Console.WriteLine("\nДобуток елементів перед останім входженням максимального числа дорівнює: {0}", multiplication);
+            return multiplication;
         }
         static void Main(string[] args)
         {
+            Console.WriteLine("Введіть в строку число яким методом ви хочете вводити числа в массив:\nРандомними числами(Введіть 1)\nВручну(Введіть 2)");
+            int choice = int.Parse(Console.ReadLine());
             Console.WriteLine("Введіть кількість елементів массиву");
             int n = int.Parse(Console.ReadLine());
-            FillingTheArray(n);
+            int[] array;
+            if (choice==1)
+            {
+                array = FillingNewArrayWithRandomNumbers(n);
+            }
+            else
+            {
+                array = FillingNewArrayWithNumbersFromKeyboard(n);
+            }
+            PrintArray(array);
+            double multiplication = MultiplyNumbersInArray(array, n);
+            Console.WriteLine("\nДобуток елементів перед останім входженням максимального числа дорівнює: {0}", multiplication);
             Console.ReadKey();
         }
     }
